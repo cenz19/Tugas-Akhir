@@ -42,20 +42,34 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required',
-            'role' => 'required|in:user,pakar',
-        ]);
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'required',
+                'role' => 'required|in:user,pakar',
+            ]);
 
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role' => $request->role,
-        ]);
+            User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role' => $request->role,
+            ]);
 
-        return redirect('/login')->with('success', 'Registration successful! Please log in.');
+            return redirect('/login')->with('success', 'Registration successful! Please log in.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            // Check if the error is related to a duplicate email
+            if ($e->errors() && isset($e->errors()['email'])) {
+                return redirect()->back()->with('alert', 'The email address is already registered.');
+            }
+
+            // Handle other validation errors
+            return redirect()->back()->withErrors($e->errors());
+        } catch (\Exception $e) {
+            // Handle unexpected errors
+            return redirect()->back()->with('alert', 'An unexpected error occurred. Please try again.');
+        }
     }
+
 }

@@ -17,7 +17,7 @@
                         <p class="card-text">
                             Pelanggaran flaming terjadi ketika seseorang secara sengaja menyebarkan kebencian atau pernyataan kasar yang dapat memicu pertikaian di dunia maya.
                         </p>
-                        <p class="legal-info"><strong>Hukum:</strong> Pasal 27 ayat (3) UU ITE menyebutkan bahwa setiap orang yang dengan sengaja dan tanpa hak mendistribusikan informasi elektronik yang mengandung unsur kebencian dapat dijerat pidana. <br>
+                        <p class="legal-info"><strong>Hukum:</strong> Pasal 28 Ayat 3 UU Nomor 1 Tahun 2024<br>
                         <strong>Hukuman:</strong> Pidana penjara paling lama 6 tahun atau denda maksimal Rp1.000.000.000,-</p>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
                         <p class="card-text">
                             Harassment melibatkan tindakan pelecehan atau ancaman yang dilakukan secara terus-menerus terhadap individu di media sosial.
                         </p>
-                        <p class="legal-info"><strong>Hukum:</strong> Pasal 29 UU ITE mengatur tentang ancaman atau pelecehan secara elektronik, yang dilakukan untuk menakut-nakuti orang lain. <br>
+                        <p class="legal-info"><strong>Hukum:</strong> Pasal 28 Ayat 2 UU Nomor 1 Tahun 2024<br>
                         <strong>Hukuman:</strong> Pidana penjara paling lama 6 tahun dan denda paling banyak Rp1.000.000.000,-</p>
                     </div>
                 </div>
@@ -48,8 +48,8 @@
                         <p class="card-text">
                             Denigrasi adalah tindakan merendahkan atau mencemarkan nama baik seseorang melalui penyebaran informasi negatif yang tidak benar.
                         </p>
-                        <p class="legal-info"><strong>Hukum:</strong> Pasal 27 ayat (3) UU ITE yang mengatur penyebaran informasi elektronik yang merugikan pihak lain. <br>
-                        <strong>Hukuman:</strong> Pidana penjara paling lama 6 tahun atau denda paling banyak Rp1.000.000.000,-</p>
+                        <p class="legal-info"><strong>Hukum:</strong> Pasal 27A UU Nomor 1 Tahun 2024<br>
+                        <strong>Hukuman:</strong> Pidana penjara maksimal 2 tahun dan/atau denda maksimal Rp400 juta.</p>
                     </div>
                 </div>
             </div>

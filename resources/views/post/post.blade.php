@@ -6,6 +6,16 @@
 @endsection
 
 @section('content')
+    @if (session('success'))
+        <div class="custom-alert custom-success">
+            {{ session('success') }}
+        </div>
+    @elseif (session('error'))
+        <div class="custom-alert custom-error">
+            {{ session('error') }}
+        </div>
+    @endif
+
     <div class="container">
         <div class="card" style="border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
             <div class="card-header" style="padding: 15px; font-size: 1.5em; border-bottom: 1px solid #ccc; border-radius: 8px 8px 0 0;">
@@ -38,16 +48,36 @@
                 </div>
             </div>
         </div>
-       
     </div>
     <style>
+        .custom-alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: Arial, sans-serif;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            width: 100%;
+        }
+
+        .custom-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .custom-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
         .container {
             display: grid;
             grid-template-columns: 2fr 1fr;
             gap: 20px;
         }
         .bg{
-            /* background-image: url('{{asset('img/bg.jpg')}}'); */
             background-image: url('https://images.unsplash.com/photo-1604856420566-576ba98b53cd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');
             background-repeat: no-repeat;
             background-size: 100% 100%;
@@ -57,7 +87,7 @@
             width: 40px;
             height: 40px;
             border: 4px solid #ccc;
-            border-top: 4px solid #007bff; /* Use your primary color */
+            border-top: 4px solid #007bff;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: auto;

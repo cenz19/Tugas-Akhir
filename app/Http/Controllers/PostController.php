@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-
+set_time_limit(0);
 class PostController extends Controller
 {
     /**
@@ -101,17 +101,12 @@ class PostController extends Controller
             'socialMedia' => $socialMedia
         ]);
         $data = $response->json();
-        if (isset($data['status'])) {
-            if ($data['status'] == 'success') {
-                return response()->json([
-                    'status'=> 'success',
-                    'msg'=> 'Post sent!'
-                ]);
-            }
+        
+        if (isset($data['status']) && $data['status'] === 'success') {
+            // Redirect with a success message stored in the session
+            return redirect()->back()->with('success', 'Post sent successfully!');
         }
-        return response()->json([
-            'status' => 'failed',
-            'msg' => 'Post failed to send'
-        ]);
+        // Redirect with an error message stored in the session
+        return redirect()->back()->with('error', 'Post failed to send.');
     }
 }

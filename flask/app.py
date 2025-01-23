@@ -21,7 +21,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.keys import Keys
-import platform
 
 import time
 from datetime import datetime
@@ -29,14 +28,13 @@ import pytz
 
 oov_tok = "<OOV>"
 trunc_type = 'post'
-embedding_dim = 128
-bilstm_dim = 160
+vector_dim = 256
+bilstm_dim = 64
 dense_dim1 = 64
 dropout_val1 = 0.3
-dense_dim2 = 64
+dense_dim2 = 192
 dropout_val2 = 0.2
 num_epochs = 100
-
 
 early_stopping = EarlyStopping(
         monitor='val_accuracy',
@@ -54,8 +52,6 @@ def noise_removal(text):
     text = emoji.replace_emoji(text, replace='')
     #menghapus http / https
     text = re.sub(r'https?://\S+', '', text)
-    #menghapus hashtag
-    text = re.sub(r'#\S+', '', text)
     #menghapus angka
     text = re.sub(r'(?<!\w)\b\d+\b(?!\w)', '', text)
     #menghapus special character
@@ -245,7 +241,7 @@ def twitter(maxScraped, keyword):
                     tweet_text = 'unknown'
                     
                 try:
-                    get_username = cell.find_element(By.XPATH, './/a[@role="link" and @tabindex="-1"]//div[@style="text-overflow: unset; color: rgb(113, 118, 123);"]//span[@style="text-overflow: unset;"]')
+                    get_username = cell.find_element(By.XPATH, './/a[@role="link" and @tabindex="-1"]//div[@style="color: rgb(113, 118, 123);"]//span[contains(@class, "css-1jxf684")]')
                     post_username = get_username.text.strip()
                 except Exception as e:
                     post_username = 'unknown'
@@ -414,15 +410,7 @@ def retrain():
 
     #shuffle dataset
     shuffled_df = combined_df.sample(frac=1, random_state=42).reset_index(drop=True)
-
-    #splitting data
-    train_size = int(0.80 * len(shuffled_df))
-
-    train_df = shuffled_df.iloc[:train_size]
-    # # test_df = shuffled_df.iloc[train_size:]
-
-    train_text, train_label = train_df['text'].tolist(), train_df['label'].tolist()
-    # # test_text, test_label = test_df['text'].tolist(), test_df['label'].tolist()
+    train_text, train_label = shuffled_df['text'].tolist(), shuffled_df['label'].tolist()
 
 
     #tokenizer
@@ -433,19 +421,17 @@ def retrain():
     
     #text to sequence
     train_sequences = tokenizer.texts_to_sequences(train_text)
-    # # test_sequences = tokenizer.texts_to_sequences(test_text)
 
     #hitung jarak simpangan rata-rata dari nilai rata-rata
     padded_length = math.ceil(mean_length + std_length)
 
     #sequence to padded sequence
     train_padded = pad_sequences(train_sequences, maxlen=padded_length, truncating=trunc_type)
-    # # test_padded = pad_sequences(test_sequences, maxlen=max_length, truncating=trunc_type)
 
 
     #define the model    
     model = tf.keras.Sequential([
-        tf.keras.layers.Embedding(input_dim=vocab_size, output_dim=embedding_dim),
+        tf.keras.layers.Embedding(input_dim=vocab_size, output_dim=vector_dim),
         tf.keras.layers.Bidirectional(tf.keras.layers.LSTM(bilstm_dim, recurrent_activation='sigmoid')),
         tf.keras.layers.Dense(dense_dim1, activation='relu'),
         tf.keras.layers.Dropout(dropout_val1),
@@ -467,10 +453,6 @@ def retrain():
         callbacks=[early_stopping]
     )
 
-    # test_predictions = model.predict(test_padded)
-    # test_predictions = np.argmax(test_predictions, axis=1)  # Convert probabilities to class predictions
-
-
     #save the model
     model.save('my_model.keras')
 
@@ -483,7 +465,6 @@ def retrain():
 
     # Save the DataFrame to an Excel file without the 'text_length' column
     combined_df.to_excel("preprocessed_dataset.xlsx", index=False)
-
 
     #read the dataset
     dataset_df = pd.read_excel("dataset.xlsx")

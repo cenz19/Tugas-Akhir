@@ -38,6 +38,11 @@
                 <strong>{{ session('alert') }}</strong>
             </div>
         @endif
+        @if(session('success'))
+            <div class="alert alert-success">
+                <strong>{{ session('success') }}</strong>
+            </div>
+        @endif
 
         <form method="POST" action="{{ route('login') }}">
             @csrf
@@ -53,6 +58,9 @@
                 <button type="submit" class="btn btn-primary">Login</button>
             </div>
         </form>
+        <p class="mt-4 text-center">
+            Don't have an account? <a href="{{ url('/register') }}" class="text-blue-400">Register</a>
+        </p>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"></script>

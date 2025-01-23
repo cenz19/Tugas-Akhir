@@ -1,11 +1,26 @@
 <div id="predicted-category" style="margin:10px 20px;">
-    <p>Your Text contain {{ $category }}</p>
+    <p>Your Text contains {{ $category }}</p>
     <br>
-    <button class="btn" onclick="postToSocialMedia('x', '{{ $text }}')">Post to X</button>
-    <button class="btn" onclick="postToSocialMedia('threads', '{{ $text }}')">Post to Threads</button>
+    
+    <!-- Form for posting to X -->
+    <form method="POST" action="{{ route('post.sendPost') }}" style="display: inline;">
+        @csrf
+        <input type="hidden" name="socialMedia" value="x">
+        <input type="hidden" name="text" value="{{ $text }}">
+        <button type="submit" class="btn">Post to X</button>
+    </form>
+
+    <!-- Form for posting to Threads -->
+    <form method="POST" action="{{ route('post.sendPost') }}" style="display: inline;">
+        @csrf
+        <input type="hidden" name="socialMedia" value="threads">
+        <input type="hidden" name="text" value="{{ $text }}">
+        <button type="submit" class="btn">Post to Threads</button>
+    </form>
 </div>
+
 <style>
-    .btn{
+    .btn {
         width: 20%; 
         padding: 10px; 
         background: linear-gradient(135deg, rgb(11, 29, 64), rgb(64, 108, 179)); 
@@ -15,25 +30,3 @@
         cursor: pointer;
     }
 </style>
-<script>
-    function postToSocialMedia(socialMedia, text) {
-        $.ajax({
-            type: 'POST',
-            url: '{{ route("post.sendPost")}}',
-            data: {
-                '_token': '{{ csrf_token() }}',
-                'socialMedia': socialMedia,
-                'text': text,
-            },
-            timeout: 600000,
-            success: function(data){
-                const predictedCategory = document.getElementById('predicted-category');
-                predictedCategory.innerHTML = '';
-            },
-            error: function (xhr, status, error) {
-                alert(`An error occurred: ${xhr.responseText || error}`);
-            }
-        })
-    }
-    
-</script>
